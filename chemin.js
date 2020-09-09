@@ -6,7 +6,8 @@ var router = express.Router();
 var projetdetails = require("./controleurs/page/projets")
 var servicedetailer = require("./controleurs/page/servicedet")
 var envoie = require("./controleurs/page/envoie")
-var voir = require("./controleurs/admin/voir")
+var voir = require("./controleurs/admin/voir");
+const { request, response } = require('express');
 
 
 
@@ -14,6 +15,9 @@ var voir = require("./controleurs/admin/voir")
 
 //les routes 
 router.get('/', (request, response) =>{
+    response.redirect('/citag')
+})
+router.get("/citag", (request, response) => {
     response.render('page/index')
 })
 router.get('/service',  servicedetailer.service)
