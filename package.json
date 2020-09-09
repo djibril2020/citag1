@@ -2,6 +2,9 @@
   "name": "citag",
   "version": "1.0.0",
   "description": "projet de site d'agence topographique",
+  "engines": {
+    "node": "12.13.1"
+  },
   "main": "serveur.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
