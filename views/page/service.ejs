@@ -1,0 +1,63 @@
+<%- include('tete'); -%>
+
+
+<%- include('header'); -%>    
+
+<div class="intro-section site-blocks-cover innerpage" style="background-image: url('/assets/fichier/images/hero_1.jpg');">
+    <div class="container">
+      <div class="row align-items-center text-center border">
+        <div class="col-lg-12 mt-5" data-aos="fade-up">
+          <h1>Nos Services</h1>
+          <p class="text-white text-center">
+            <a href="/">Acceuil</a>
+            <span class="mx-2">/</span>
+            <span>Service</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- END slider -->
+    
+ <!-- debut corps-->
+    <!-- END block-1-->
+    <div class="site-section">
+        <div class="container">
+            <div class="row">
+                <% for(var i= 0 ; i < requette.length; i++)  {%>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="project-item">
+                        <div class="project-item-contents">
+                            <a href="/servicedetails/<%= requette[i].id %>">
+                            <span class="project-item-category">Topographie</span>
+                            <h2 class="project-item-title">
+                                <%= requette[i].titre %>
+                            </h2>
+                            </a>
+                        </div>
+                        <img src="/assets/fichier/images/<%= requette[i].photo %>" alt="Image" class="img-fluid">
+                    </div>
+                </div>
+                <% } %>
+
+            </div>
+              <div class="row mb-5 justify-content-center text-center">
+          <div class="col-lg-12">
+              <h3 class="section-subtitle">CITAG, SOCIÉTÉ DE CONSEIL ET DE PRESTATIONS DE LEVÉS TOPOGRAPHIQUES, MODÉLISATION 3D, TRAVAUX FONCIERS ET ÉTUDES D'AMÉNAGEMENT</h3>
+              <h2 class="section-title mb-4 text-black">
+                Depuis sa création, <strong>CITAG</strong> intervient dans tous les domaines liés à l’aménagement du territoire et au cadre de vie. Implanté à Conakry et dans a Sigiri, notre bureau d’étude effectue régulièrement des prestations au niveau local, national.
+L’entreprise s’est spécialisée dans le levé topographique aérien, terrestre et sous-marin, et maîtrise toutes les techniques de capture, de la photogrammétrie à la lasergrammétrie, en passant par la cartographie mobile. Dans le domaine du foncier et de l’immobilier, notre cabinet de géomètres-experts (inscrit à l’OGE) accompagne les acteurs du public, du privé, et les collectivités sur tous types de projets : travaux, études d’aménagement, urbanisme…
+Notre expertise et notre réactivité sont basées sur une équipe forte de 8 géomètres-experts, 10 ingénieurs et 50 techniciens, un parc de matériels et de logiciels performants, et une activité R&D en partenariat avec des laboratoires universitaires.
+Notre pluridisciplinarité nous permet d’être efficaces aussi bien sur des prestations courantes (bornages, plans de voirie et de récolement de réseaux…), que sur des projets plus complexes nécessitant de faire appel à des compétences variées en topographie (prise de vue aérienne par avion, hélicoptère et/ou drone, levé topographique au sol par lasergrammétrie, mobile mapping, bathymétrie…).
+              </h2>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    
+  <%- include('footer'); -%>  
+
+</body>
+
+</html>

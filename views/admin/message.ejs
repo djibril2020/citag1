@@ -1,0 +1,82 @@
+<%- include('tete'); -%>
+
+            <!-- END HEADER DESKTOP-->
+<%- include('header'); -%>
+            <!-- BREADCRUMB-->
+            <section class="au-breadcrumb m-t-75">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="au-breadcrumb-content">
+                                    <div class="au-breadcrumb-left">
+                                        <span class="au-breadcrumb-span">Nous sommes a la page:</span>
+                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                            <h3>Message</h3>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END BREADCRUMB-->
+
+            <!-- STATISTIC-->
+            <section class="statistic">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            
+                            <% if(typeof message !== "undefined"){ %>
+                                <% for(var i= 0 ; i < message.length; i++)  {%> 
+                            <div class="col-md-6">
+                                <aside class="profile-nav alt">
+                                    <section class="card">
+                                        <div class="card-header user-header alt bg-dark">
+                                            <div class="media">
+                                                <a href="#">
+                                                    <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="/assets/admin/images/icon/avatar-01.jpg">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h2 class="text-light display-6"><%= message[i].nom %> <%= message[i].prenom %></h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <i class="fa fa-phone"></i> Telephone:
+                                                <h4><%= message[i].telephone %></h4> 
+                                        </li>
+                                            <li class="list-group-item">
+                                                    <i class="fas fa-envelope"></i> Email
+                                                    <h4 ><%= message[i].email %></h4> 
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas  fa-envelope"></i> Message :<br>
+                                                 <h4>
+                                                    <%= message[i].message %>     
+                                                </h4>
+                                            </li>
+                                        </ul>
+
+                                    </section>
+                                </aside>
+                            </div>  
+                            
+                            <% } %>     
+                            <% } %>             
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC-->
+
+            <%- include('pied'); -%>
+      
+</body>
+
+</html>
+<!-- end document-->
