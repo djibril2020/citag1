@@ -7,8 +7,9 @@
   },
   "main": "serveur.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "node serveur.js"
+ }
+ ,
   "author": "amara camara",
   "license": "ISC",
   "dependencies": {
