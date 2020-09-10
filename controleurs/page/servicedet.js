@@ -4,8 +4,7 @@ exports.servicedetail = function(request, response) {
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
    async function main(){
-    
-    const uri = "mongodb://localhost:27017/citag"
+    const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
     const client = new MongoClient(uri,   { useUnifiedTopology: true } );
  
     try {
@@ -47,7 +46,7 @@ exports.service = function(request, response) {
     const assert = require('assert');
    async function main(){
     
-    const uri = "mongodb://localhost:27017/citag"
+    const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
     const client = new MongoClient(uri,   { useUnifiedTopology: true } );
  
     try {

@@ -48,71 +48,91 @@ ce middelware permet de creer un compte
        return;
      }
      else {
+      //decu
       const MongoClient = require('mongodb').MongoClient;
       const assert = require('assert');
       //url de connection
-      const url = "mongodb://localhost:27017/citag";
+      const url = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+     
       //nom de la bdd
       const dbName = 'citag';
       //creation d'un nouveau mongoclient
       const client = new MongoClient(url ,  { useUnifiedTopology: true });
-      var mesmatiere = ''
+     
       //utilisation de la methode connect pour la connection au serveur
-      client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const identifier = db.collection('authentification');
-        const inscrit = db.collection('inscrit');
-        var nom = request.body.nom;
-        var Nom = nom.toLowerCase();
-        var identifiant = parseInt(request.body.identifiant);
-        var email = request.body.email;
-        var motdepasse = request.body.motdepasse;
-        identifier.find({"name": "authenfier"}).toArray(function (err, discut) { 
-          for (let i = 0; i < discut[0]['utilisateur'].length; i++) {
-             if (discut[0]['utilisateur'][i].Nom == Nom && discut[0]['utilisateur'][i].Identifiant == parseInt(request.body.identifiant)) {
-                  nomerreur = "votre nom est correcte";
-                  erreurauth.push(nomerreur)
-
-             }         
-            
-          }
-          if (isEmpty(erreurauth)) { //si les nom ou matricule ne correspond pas on envoie une erreur de non correspondance
-            response.render('admin/enregistrer', {authentifierreur: "veuillez bien saisir les informations"});
-             
-           }else{
-            bcrypt.hash(motdepasse, 10, (err, hash) => {
-              if (err) { 
-                return
-              }
-              
-            
-            inscrit.updateOne(
-              { name: "inscrit"},
-              {
-                $push : { utilisateur : { "Nom": Nom,
-                "Identifiant": identifiant,
-                "Email": email,
-                "Motdepasse": hash,
-              }}
-              }
-            )  
-            
-  
-            //stockage des informations dans les sessions
-            response.cookie('nom', Nom);
-            response.cookie('identifiant', identifiant)
-            response.cookie('email', email);
-            response.locals.nom = Nom;
-            response.locals.identifiant = identifiant;
-            response.locals.email = email;
-          
-            response.redirect('admin/acceuil');
-            
-          }) }
-      })
-      })  
+      async function main(){
+    
+        const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+        const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+     
+        try {
+            // Connect to the MongoDB cluster
+            client.connect( function (err, client) {
+              assert.equal(null, err);
+              //console.log('connecter corectement');
+              const db = client.db(dbName);
+              const identifier = db.collection('authentification');
+              const inscrit = db.collection('inscrit');
+              var nom = request.body.nom;
+              var Nom = nom.toLowerCase();
+              var identifiant = parseInt(request.body.identifiant);
+              var email = request.body.email;
+              var motdepasse = request.body.motdepasse;
+              identifier.find({"name": "authenfier"}).toArray(function (err, discut) { 
+                for (let i = 0; i < discut[0]['utilisateur'].length; i++) {
+                   if (discut[0]['utilisateur'][i].Nom == Nom && discut[0]['utilisateur'][i].Identifiant == parseInt(request.body.identifiant)) {
+                        nomerreur = "votre nom est correcte";
+                        erreurauth.push(nomerreur)
+      
+                   }         
+                  
+                }
+                if (isEmpty(erreurauth)) { //si les nom ou matricule ne correspond pas on envoie une erreur de non correspondance
+                  response.render('admin/enregistrer', {authentifierreur: "veuillez bien saisir les informations"});
+                   
+                 }else{
+                  bcrypt.hash(motdepasse, 10, (err, hash) => {
+                    if (err) { 
+                      return
+                    }
+                    
+                  
+                  inscrit.updateOne(
+                    { name: "inscrit"},
+                    {
+                      $push : { utilisateur : { "Nom": Nom,
+                      "Identifiant": identifiant,
+                      "Email": email,
+                      "Motdepasse": hash,
+                    }}
+                    }
+                  )  
+                  
+        
+                  //stockage des informations dans les sessions
+                  response.cookie('nom', Nom);
+                  response.cookie('identifiant', identifiant)
+                  response.cookie('email', email);
+                  response.locals.nom = Nom;
+                  response.locals.identifiant = identifiant;
+                  response.locals.email = email;
+                
+                  response.redirect('/admin/acceuil');
+                  
+                }) }
+            })
+            }) 
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    }
+    main().catch(console.error);
+      
+      
+       
+     
        
       
      }
@@ -138,52 +158,74 @@ ce middelware permet de creer un compte
          
          return;
        }else {
-      var erreurauth = []
-      var nomerreur = '';
+           
+         //autre
+         var erreurauth = []
+         let nomerreur = '';
          // Data from form is valid.
          const MongoClient = require('mongodb').MongoClient;
          const assert = require('assert');
          //url de connection
-         const url = "mongodb://localhost:27017/citag";
+     // const url = "mongodb://localhost:27017/ecole";
          //nom de la bdd
          const dbName = 'citag';
          //creation d'un nouveau mongoclient
-         const client = new MongoClient(url ,  { useUnifiedTopology: true });
+         //const client = new MongoClient(url ,  { useUnifiedTopology: true });
          //utilisation de la methode connect pour la connection au serveur
-         client.connect( function (err, client) {
-           const db = client.db(dbName);
-           const verifi = db.collection('inscrit');
-           var monidentifiant = parseInt(request.body.identifiant);
-           var motdepasse = request.body.motdepasse;
-           verifi.find({"name": "inscrit"}).toArray(function (err, inscription) { 
-             for (let i = 0; i < inscription[0]['utilisateur'].length; i++) {  
-               if (inscription[0]['utilisateur'][i].Identifiant == monidentifiant ) {
-                   
-                    bcrypt.compare(motdepasse,  inscription[0]['utilisateur'][i].Motdepasse, function(err, isMatch) {
-                     if (err) {
-                       throw err
-                     } else if (!isMatch) {
-                       response.render('admin/index', {authentifierreur: "veuillez bien saisir les informations"})
-            
-                     } else {
-                       nomerreur = "votre nom est correcte";
-                       erreurauth.push(nomerreur)
-                       Nom = inscription[0]['utilisateur'][i].Nom
-                       identifiant = monidentifiant;
-               //stockage des informations dans les sessions
-               response.cookie('nom', Nom);
-               response.cookie('identifiant', identifiant)
-               response.locals.nom = Nom;
-               response.locals.identifiant = identifiant;
-               response.render('admin/acceuil');
- 
-                     }
-                   })
-               }  
-            }
-           })
-           
-         })  
+         
+         async function main(){
+     
+          
+          
+        const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+        const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+        
+           try {
+               // Connect to the MongoDB cluster
+               
+               client.connect( function (err, client) {
+                const db = client.db(dbName);
+                const verifi = db.collection('inscrit');
+                var monidentifiant = parseInt(request.body.identifiant);
+                var motdepasse = request.body.motdepasse;
+                verifi.find({"name": "inscrit"}).toArray(function (err, inscription) { 
+                  for (let i = 0; i < inscription[0]['utilisateur'].length; i++) {  
+                    if (inscription[0]['utilisateur'][i].Identifiant == monidentifiant ) {
+                        
+                         bcrypt.compare(motdepasse,  inscription[0]['utilisateur'][i].Motdepasse, function(err, isMatch) {
+                          if (err) {
+                            throw err
+                          } else if (!isMatch) {
+                            response.render('admin/index', {authentifierreur: "veuillez bien saisir les informations"})
+                 
+                          } else {
+                            nomerreur = "votre nom est correcte";
+                            erreurauth.push(nomerreur)
+                            Nom = inscription[0]['utilisateur'][i].Nom
+                            identifiant = monidentifiant;
+                    //stockage des informations dans les sessions
+                    response.cookie('nom', Nom);
+                    response.cookie('identifiant', identifiant)
+                    response.locals.nom = Nom;
+                    response.locals.identifiant = identifiant;
+                    response.render('admin/acceuil');
+      
+                          }
+                        })
+                    }  
+                 }
+                })
+                
+              })
+        
+           } catch (e) {
+               console.error(e);
+           } finally {
+               await client.close();
+           }
+       }
+       
+       main().catch(console.error);
          
               }
      }
@@ -194,7 +236,7 @@ exports.lesdevis = function(request, response) {
     const assert = require('assert');
    async function main(){
     
-    const uri = "mongodb://localhost:27017/citag"
+    const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
     const client = new MongoClient(uri,   { useUnifiedTopology: true } );
  
     try {
@@ -241,7 +283,7 @@ exports.message = function(request, response) {
   const assert = require('assert');
  async function main(){
   
-  const uri = "mongodb://localhost:27017/citag"
+  const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
   const client = new MongoClient(uri,   { useUnifiedTopology: true } );
 
   try {
@@ -289,8 +331,8 @@ exports.email = function(request, response) {
   const MongoClient = require('mongodb').MongoClient;
   const assert = require('assert');
  async function main(){
-  
-  const uri = "mongodb://localhost:27017/citag"
+
+  const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
   const client = new MongoClient(uri,   { useUnifiedTopology: true } );
 
   try {
@@ -338,8 +380,7 @@ exports.servicevoir = function(request, response) {
   const MongoClient = require('mongodb').MongoClient;
   const assert = require('assert');
  async function main(){
-  
-  const uri = "mongodb://localhost:27017/citag"
+  const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
   const client = new MongoClient(uri,   { useUnifiedTopology: true } );
 
   try {
@@ -391,7 +432,7 @@ exports.projetvoir = function(request, response) {
   const assert = require('assert');
  async function main(){
   
-  const uri = "mongodb://localhost:27017/citag"
+  const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
   const client = new MongoClient(uri,   { useUnifiedTopology: true } );
 
   try {
@@ -453,41 +494,59 @@ if (errors.isEmpty()) {
     response.locals.email = request.cookies.email;
      response.render('admin/acceuil');
   } else{
+  //true 
+  var erreurauth = []
+  let nomerreur = '';
+  // Data from form is valid.
+  const MongoClient = require('mongodb').MongoClient;
+  const assert = require('assert');
+  //url de connection
+// const url = "mongodb://localhost:27017/ecole";
+  //nom de la bdd
+  const dbName = 'citag';
+  //creation d'un nouveau mongoclient
+  //const client = new MongoClient(url ,  { useUnifiedTopology: true });
+  //utilisation de la methode connect pour la connection au serveur
+  
+  async function main(){
 
-    const MongoClient = require('mongodb').MongoClient;
-    const assert = require('assert');
-    //url de connection
-    const url = "mongodb://localhost:27017/citag";
-    //nom de la bdd
-    const dbName = 'citag';
-    //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
-    //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const titre = db.collection('service');
-        var id = request.body.id
-        var letitre = request.body.titre; 
-        titre.updateOne(
-            { id: parseInt(id)},
-            {
-                $set : { titre : letitre}
-            }
-          ) 
-
-    
-    }
-    )
-    response.locals.nom = request.cookies.nom;
-    response.locals.identifiant = request.cookies.identifiant;
-    response.locals.email = request.cookies.email;
-    response.render("admin/acceuil")
-    
-  }
+    const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+    const client = new MongoClient(uri,   { useUnifiedTopology: true } );
  
+    try {
+        // Connect to the MongoDB cluster
+        client.connect( function (err, client) {
+          assert.equal(null, err);
+          //console.log('connecter corectement');
+          const db = client.db(dbName);
+          const titre = db.collection('service');
+          var id = request.body.id
+          var letitre = request.body.titre; 
+          titre.updateOne(
+              { id: parseInt(id)},
+              {
+                  $set : { titre : letitre}
+              }
+            ) 
+  
+      
+      }
+      )
+      response.locals.nom = request.cookies.nom;
+      response.locals.identifiant = request.cookies.identifiant;
+      response.locals.email = request.cookies.email;
+      response.render("admin/acceuil")
+ 
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
 }
+
+main().catch(console.error);
+ 
+}}
 ]
 //mettre a jour le contenu dans  service
 exports.modifierservicecontenue = [ //verification de l'email
@@ -507,36 +566,57 @@ if (errors.isEmpty()) {
      response.render('admin/acceuil');
   } else{
 
+    //trou
+    var erreurauth = []
+    let nomerreur = '';
+    // Data from form is valid.
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
     //url de connection
-    const url = "mongodb://localhost:27017/citag";
+// const url = "mongodb://localhost:27017/ecole";
     //nom de la bdd
     const dbName = 'citag';
     //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
+    //const client = new MongoClient(url ,  { useUnifiedTopology: true });
     //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const titre = db.collection('service');
-        var id = request.body.id
-        var contenue = request.body.contenue; 
-        titre.updateOne(
-            { id: parseInt(id)},
-            {
-                $set : { contenu : contenue}
-            }
-          ) 
-
     
-    }
-    )
-    response.locals.nom = request.cookies.nom;
-    response.locals.identifiant = request.cookies.identifiant;
-    response.locals.email = request.cookies.email;
-    response.render("admin/acceuil")
+    async function main(){
+
+      const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+      const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+   
+      try {
+          // Connect to the MongoDB cluster
+          client.connect( function (err, client) {
+            assert.equal(null, err);
+            //console.log('connecter corectement');
+            const db = client.db(dbName);
+            const titre = db.collection('service');
+            var id = request.body.id
+            var contenue = request.body.contenue; 
+            titre.updateOne(
+                { id: parseInt(id)},
+                {
+                    $set : { contenu : contenue}
+                }
+              ) 
+    
+        
+        }
+        )
+        response.locals.nom = request.cookies.nom;
+        response.locals.identifiant = request.cookies.identifiant;
+        response.locals.email = request.cookies.email;
+        response.render("admin/acceuil")
+   
+      } catch (e) {
+          console.error(e);
+      } finally {
+          await client.close();
+      }
+  }
+  
+  main().catch(console.error);
     
   }
  
@@ -559,38 +639,57 @@ if (errors.isEmpty()) {
     response.locals.identifiant = request.cookies.identifiant;
     response.locals.email = request.cookies.email;
      response.render('admin/acceuil');
-  } else{
-
+  } else{   
+    
+    var erreurauth = []
+    let nomerreur = '';
+    // Data from form is valid.
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
     //url de connection
-    const url = "mongodb://localhost:27017/citag";
+// const url = "mongodb://localhost:27017/ecole";
     //nom de la bdd
     const dbName = 'citag';
     //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
+    //const client = new MongoClient(url ,  { useUnifiedTopology: true });
     //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const titre = db.collection('projets');
-        var id = request.body.id
-        var letitre = request.body.titre; 
-        titre.updateOne(
-            { id: parseInt(id)},
-            {
-                $set : { titre : letitre}
-            }
-          ) 
-
     
-    }
-    )
-    response.locals.nom = request.cookies.nom;
-    response.locals.identifiant = request.cookies.identifiant;
-    response.locals.email = request.cookies.email;
-    response.render("admin/acceuil")
+    async function main(){
+
+      const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+      const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+   
+      try {
+        client.connect( function (err, client) {
+          assert.equal(null, err);
+          //console.log('connecter corectement');
+          const db = client.db(dbName);
+          const titre = db.collection('projets');
+          var id = request.body.id
+          var letitre = request.body.titre; 
+          titre.updateOne(
+              { id: parseInt(id)},
+              {
+                  $set : { titre : letitre}
+              }
+            ) 
+  
+      
+      }
+      )
+      response.locals.nom = request.cookies.nom;
+      response.locals.identifiant = request.cookies.identifiant;
+      response.locals.email = request.cookies.email;
+      response.render("admin/acceuil")
+      } catch (e) {
+          console.error(e);
+      } finally {
+          await client.close();
+      }
+  }
+  
+  main().catch(console.error);
+    
     
   }
  
@@ -612,38 +711,58 @@ if (errors.isEmpty()) {
     response.locals.identifiant = request.cookies.identifiant;
     response.locals.email = request.cookies.email;
      response.render('admin/acceuil');
-  } else{
+  } else{ 
+    //vddddddddd
 
+    var erreurauth = []
+    let nomerreur = '';
+    // Data from form is valid.
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
     //url de connection
-    const url = "mongodb://localhost:27017/citag";
+// const url = "mongodb://localhost:27017/ecole";
     //nom de la bdd
     const dbName = 'citag';
     //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
+    //const client = new MongoClient(url ,  { useUnifiedTopology: true });
     //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const titre = db.collection('projets');
-        var id = request.body.id
-        var contenue = request.body.contenue; 
-        titre.updateOne(
-            { id: parseInt(id)},
-            {
-                $set : { contenu : contenue}
-            }
-          ) 
-
     
-    }
-    )
-    response.locals.nom = request.cookies.nom;
-    response.locals.identifiant = request.cookies.identifiant;
-    response.locals.email = request.cookies.email;
-    response.render("admin/acceuil")
+    async function main(){
+
+      const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+      const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+   
+      try {
+        client.connect( function (err, client) {
+          assert.equal(null, err);
+          //console.log('connecter corectement');
+          const db = client.db(dbName);
+          const titre = db.collection('projets');
+          var id = request.body.id
+          var contenue = request.body.contenue; 
+          titre.updateOne(
+              { id: parseInt(id)},
+              {
+                  $set : { contenu : contenue}
+              }
+            ) 
+  
+      
+      }
+      )
+      response.locals.nom = request.cookies.nom;
+      response.locals.identifiant = request.cookies.identifiant;
+      response.locals.email = request.cookies.email;
+      response.render("admin/acceuil")
+      } catch (e) {
+          console.error(e);
+      } finally {
+          await client.close();
+      }
+  }
+  
+  main().catch(console.error);
+    
     
   }
  

@@ -35,44 +35,63 @@ const errors = validator.validationResult(request);
 if (!errors.isEmpty()) {
     var erreur = errors.array();
     console.log("pppf f")
-     response.render('page/', { erreur: erreur});
+     response.render('page/index', { erreur: erreur});
   } else{
 
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
     //url de connection
-    const url = "mongodb://localhost:27017/citag";
+   // const url = "mongodb://localhost:27017/ecole";
     //nom de la bdd
     const dbName = 'citag';
     //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
+    //const client = new MongoClient(url ,  { useUnifiedTopology: true });
     //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const email = db.collection('envoie');
-        var mail = request.body.email; 
-        var nom = request.body.nom; 
-        var tele = request.body.telephone; 
-        var sujet = request.body.sujet;
-        var message = request.body.message; 
-        email.updateOne(
-            { name: "devis"},
-            {
-                $push : { commentaire :  { "nom": nom,
-                "telephone": tele,
-                "email": mail,
-                "sujet": sujet,
-                "message": message
-              }}
-            }
-          ) 
+    async function main(){
 
-    
-    }
-    )
-    response.redirect('/')
+      
+      const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+      const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+   
+      try {
+          // Connect to the MongoDB cluster
+          client.connect( function (err, client) {
+            assert.equal(null, err);
+            //console.log('connecter corectement');
+            const db = client.db(dbName);
+            const email = db.collection('envoie');
+            var mail = request.body.email; 
+            var nom = request.body.nom; 
+            var tele = request.body.telephone; 
+            var sujet = request.body.sujet;
+            var message = request.body.message; 
+            email.updateOne(
+                { name: "devis"},
+                {
+                    $push : { commentaire :  { "nom": nom,
+                    "telephone": tele,
+                    "email": mail,
+                    "sujet": sujet,
+                    "message": message
+                  }}
+                }
+              ) 
+        
+        }
+        )
+        response.redirect('/')
+   
+      } catch (e) {
+          console.error(e);
+      } finally {
+          await client.close();
+      }
+  }
+  
+  main().catch(console.error);
+
+   
+
     
   }
  
@@ -97,29 +116,48 @@ exports.email = [ //verification de l'email
         const MongoClient = require('mongodb').MongoClient;
         const assert = require('assert');
         //url de connection
-        const url = "mongodb://localhost:27017/citag";
+        //const url = "mongodb://localhost:27017/ecole";
         //nom de la bdd
         const dbName = 'citag';
         //creation d'un nouveau mongoclient
-        const client = new MongoClient(url ,  { useUnifiedTopology: true });
+       // const client = new MongoClient(url ,  { useUnifiedTopology: true });
         //utilisation de la methode connect pour la connection au serveur
-        client.connect( function (err, client) {
-            assert.equal(null, err);
-            //console.log('connecter corectement');
-            const db = client.db(dbName);
-            const email = db.collection('envoie');
-            var mail = request.body.email; 
-            email.updateOne(
-                { name: "email"},
-                {
-                  $push : { lesmail : mail}
-                }
-              ) 
-   
-        
-        }
-        )
-        response.redirect('/')
+        async function main(){
+    
+          const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+          const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+       
+          try {
+              // Connect to the MongoDB cluster
+              
+              client.connect( function (err, client) {
+                assert.equal(null, err);
+                //console.log('connecter corectement');
+                const db = client.db(dbName);
+                const email = db.collection('envoie');
+                var mail = request.body.email; 
+                email.updateOne(
+                    { name: "email"},
+                    {
+                      $push : { lesmail : mail}
+                    }
+                  ) 
+       
+            
+            }
+            )
+            response.redirect('/')
+       
+          } catch (e) {
+              console.error(e);
+          } finally {
+              await client.close();
+          }
+      }
+      
+      main().catch(console.error);
+    
+    
              
     }
    
@@ -143,42 +181,61 @@ if (!errors.isEmpty()) {
     console.log(erreur)
      response.render('page/contact', { erreur: erreur});
   } else{
-
+    
     const MongoClient = require('mongodb').MongoClient;
     const assert = require('assert');
     //url de connection
-    const url = "mongodb://localhost:27017/citag";
+   // const url = "mongodb://localhost:27017/ecole";
     //nom de la bdd
     const dbName = 'citag';
     //creation d'un nouveau mongoclient
-    const client = new MongoClient(url ,  { useUnifiedTopology: true });
+    //const client = new MongoClient(url ,  { useUnifiedTopology: true });
     //utilisation de la methode connect pour la connection au serveur
-    client.connect( function (err, client) {
-        assert.equal(null, err);
-        //console.log('connecter corectement');
-        const db = client.db(dbName);
-        const email = db.collection('envoie');
-        var mail = request.body.email; 
-        var nom = request.body.nom; 
-        var tele = request.body.telephone; 
-        var prenom = request.body.prenom;
-        var message = request.body.message; 
-        email.updateOne(
-            { name: "contacte"},
-            {
-                $push : { commentaire :  { "nom": nom,
-                "prenom": prenom,
-                "telephone": tele,
-                "email": mail,
-                "message": message
-              }}
-            }
-          ) 
+    async function main(){
 
-    
-    }
-    )
-    response.redirect('/')
+      
+      
+      const uri = "mongodb+srv://root1:Camara0704@cluster0.ukuyb.mongodb.net/citag?retryWrites=true&w=majority";
+      const client = new MongoClient(uri,   { useUnifiedTopology: true } );
+   
+      try {
+        client.connect( function (err, client) {
+          assert.equal(null, err);
+          //console.log('connecter corectement');
+          const db = client.db(dbName);
+          const email = db.collection('envoie');
+          var mail = request.body.email; 
+          var nom = request.body.nom; 
+          var tele = request.body.telephone; 
+          var prenom = request.body.prenom;
+          var message = request.body.message; 
+          email.updateOne(
+              { name: "contacte"},
+              {
+                  $push : { commentaire :  { "nom": nom,
+                  "prenom": prenom,
+                  "telephone": tele,
+                  "email": mail,
+                  "message": message
+                }}
+              }
+            ) 
+  
+      
+      }
+      )
+      response.redirect('/')
+   
+      } catch (e) {
+          console.error(e);
+      } finally {
+          await client.close();
+      }
+  }
+  
+  main().catch(console.error);
+
+   
     
   }
  
